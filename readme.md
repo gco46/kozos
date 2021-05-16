@@ -15,13 +15,13 @@
 
 - minicom==2.7.1
 
-When you change settings, execute a following command. (default japanese menu contains bugs)
+設定を変更するときは、以下のコマンドで英語表示にする。（日本語表記にはバグがあるため）
 
 ```
 sudo LANG=C minicom -o -s
 ```
 
-To use minicom, execute a following command
+minicom起動は以下のコマンドで行う。
 
 ```
 sudo minicom -o
@@ -40,14 +40,16 @@ sudo minicom -o
 
 ### gcc
 
-1. Get gcc from wget
+1. wgetコマンドでgccを取得する
 
 ```
 wget http:/core.gr.jp/pub/GNU/gcc/gcc-3.4.6/gcc-3.4.6.tar.gz
 tar zxvf gcc-3.4.6.tar.gz
 ```
 
-2. Collect `gcc/collect2.c`, line 1537:
+2. `gcc/collect2.c`, line 1537を修正する:
+
+from
 
 ```c
 redir_handle = open(redir, O_WRONLY | O_TRUNC | O_CREAT);
@@ -59,7 +61,7 @@ to
 redir_handle = open(redir, O_WRONLY | O_TRUNC | O_CREAT, 0755);
 ```
 
-3. Apply the patch
+3. パッチを当てる
 
 ```
 (in gcc-3.4.6/)
@@ -67,7 +69,7 @@ wget http://kozos.jp/books/makeos/patch-gcc-3.4.6-x64-h8300.txt
 patch -p0 < patch-gcc-3.4.6-x64-h8300.txt
 ```
 
-4. Build
+4. ビルドする
 
 ```
 (in gcc-3.4.6/)
@@ -82,12 +84,12 @@ sudo make install
 
 ### binutils
 
-just do it (`ld.scr` must be modified to fix alignment bug:https://groups.google.com/g/kozos_tomonokai/c/HiyFwp-lt6M)
+インストールするだけ (`ld.scr` にはアライメントに関するバグがあるため、適宜修正する:https://groups.google.com/g/kozos_tomonokai/c/HiyFwp-lt6M)
 
 ### kz_h8write
 
-1. download via following url: https://ja.osdn.net/projects/kz-h8write/
-2. unzip and build
+1. ダウンロードする。URL: https://ja.osdn.net/projects/kz-h8write/
+2. 展開してビルドする。
 
 ```
 unzip kz_h8write-v0.2.1.zpi
@@ -95,5 +97,5 @@ cd PackageFiles/src
 make
 ```
 
-3. Don't forget to modify the Makefile path. 
+3. makeファイルのパス（`H8WRITE`）を`kz_h8write`のバイナリを指定するように修正する。
 
