@@ -3,7 +3,7 @@
 
 #define NULL ((void *)0)
 // 標準のシリアルデバイス
-#define SERIAL_DEFAULT_DEVICE	1
+#define SERIAL_DEFAULT_DEVICE 1
 
 typedef unsigned char uint8;
 typedef unsigned short uint16;
