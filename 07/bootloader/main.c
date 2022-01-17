@@ -3,6 +3,7 @@
 #include "serial.h"
 #include "xmodem.h"
 #include "elf.h"
+#include "interrupt.h"
 
 static int init(void) {
 	/*ld.scrで定義したシンボル*/
@@ -12,6 +13,9 @@ static int init(void) {
 	/*これ以降で静的領域の変数を利用可能となる*/
 	memcpy(&data_start, &erodata, (long)&edata - (long)&data_start);
 	memset(&bss_start, 0, (long)&ebss - (long)&bss_start);
+
+	/*ソフトウェア割り込みベクタの初期化*/
+	softvec_init();
 
 	/*シリアルの初期化*/
 	serial_init(SERIAL_DEFAULT_DEVICE);
@@ -55,6 +59,8 @@ int main(void) {
 	char *entry_point;
 	ep f;
 
+	// 冒頭の初期化は割り込み無効
+	INTR_DISABLE;
 	init();
 
 	puts("kzload (kozos boot loader) started.\n");
